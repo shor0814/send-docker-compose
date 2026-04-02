@@ -69,51 +69,68 @@ svg.text-primary               { color: var(--won-primary); }
 /* ─── Footer ─────────────────────────────────────────────────── */
 footer,
 .main-footer                   { border-top: 1px solid var(--won-border); }
-.text-grey-60.dark\:text-grey-40 { color: var(--won-text-muted) !important; }
 
 /* ─── Card / main panel shadow ──────────────────────────────── */
 .md\:shadow-big                { background-color: var(--won-surface) !important;
                                   box-shadow: 0px 0px 1px rgba(0,0,0,0.04),
                                               0px 8px 40px rgba(0,0,0,0.08) !important; }
 
+/* ─── Dark mode toggle icons ─────────────────────────────────── */
+/* Light mode: show moon, hide sun */
+.dark-mode-toggle .icon-sun    { display: none; }
+.dark-mode-toggle .icon-moon   { display: block; }
+/* Dark mode: show sun, hide moon */
+html.dark .dark-mode-toggle .icon-sun  { display: block; }
+html.dark .dark-mode-toggle .icon-moon { display: none; }
+
 /* ═══════════════════════════════════════════════════════════════
-   Dark mode — follows system preference
-   Colors match client.webofnevada.com dark palette
+   Dark mode — activated by html.dark class (set by JS toggle
+   and initialized from localStorage / system preference)
    ═══════════════════════════════════════════════════════════════ */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --won-bg:         #121212;
-    --won-surface:    #2B2B2B;
-    --won-border:     #424242;
-    --won-subtle:     #303030;
-    --won-text:       #E0E0E0;
-    --won-text-body:  #D9D9D9;
-    --won-text-muted: #8C8C8C;
-    /* Primary stays the same in dark — strong enough red on dark bg */
-  }
-
-  body,
-  .dark\:bg-black,
-  .md\:bg-grey-10               { background-color: var(--won-bg)      !important; }
-
-  .dark\:text-grey-40           { color: var(--won-text-muted) !important; }
-
-  .bg-white                     { background-color: var(--won-surface) !important; }
-  .bg-grey-10,
-  .bg-grey-20                   { background-color: var(--won-subtle)  !important; }
-
-  h1, h2, h3, h4, h5, h6       { color: var(--won-text)       !important; }
-  .text-grey-80                 { color: var(--won-text)       !important; }
-  .text-grey-60                 { color: var(--won-text-body)  !important; }
-  .text-grey-50,
-  .text-grey-40                 { color: var(--won-text-muted) !important; }
-
-  .border-grey-30               { border-color: var(--won-border) !important; }
-
-  .main-header                  { background-color: var(--won-surface) !important;
-                                   border-bottom-color: var(--won-border); }
-
-  .md\:shadow-big               { background-color: var(--won-surface) !important;
-                                   box-shadow: 0px 0px 1px rgba(0,0,0,0.16),
-                                               0px 8px 40px rgba(0,0,0,0.24) !important; }
+html.dark {
+  --won-bg:         #121212;
+  --won-surface:    #2B2B2B;
+  --won-border:     #424242;
+  --won-subtle:     #303030;
+  --won-text:       #E0E0E0;
+  --won-text-body:  #D9D9D9;
+  --won-text-muted: #8C8C8C;
+  /* Primary stays the same in dark — strong enough red on dark bg */
 }
+
+html.dark body,
+html.dark .dark\:bg-black,
+html.dark .md\:bg-grey-10      { background-color: var(--won-bg)      !important; }
+
+html.dark .dark\:text-grey-40  { color: var(--won-text-muted) !important; }
+
+html.dark .bg-white            { background-color: var(--won-surface) !important; }
+html.dark .bg-grey-10,
+html.dark .bg-grey-20          { background-color: var(--won-subtle)  !important; }
+
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6                   { color: var(--won-text)       !important; }
+html.dark .text-grey-80        { color: var(--won-text)       !important; }
+html.dark .text-grey-60        { color: var(--won-text-body)  !important; }
+html.dark .text-grey-50,
+html.dark .text-grey-40        { color: var(--won-text-muted) !important; }
+
+html.dark .border-grey-30      { border-color: var(--won-border) !important; }
+
+html.dark .main-header         { background-color: var(--won-surface) !important;
+                                  border-bottom-color: var(--won-border); }
+
+html.dark .md\:shadow-big      { background-color: var(--won-surface) !important;
+                                  box-shadow: 0px 0px 1px rgba(0,0,0,0.16),
+                                              0px 8px 40px rgba(0,0,0,0.24) !important; }
+
+/* Dark mode inputs and dropdowns */
+html.dark .dark\:bg-grey-80    { background-color: #2a2a2e !important; }
+html.dark .dark\:bg-grey-90    { background-color: #0c0c0d !important; }
+html.dark .dark\:border-grey-70 { border-color: #38383d !important; }
+html.dark .dark\:text-grey-30  { color: #d7d7db !important; }
+html.dark .dark\:text-white    { color: #ffffff !important; }
