@@ -1,62 +1,83 @@
 version: "3"
 
 services:
-  nginx-proxy:
-    container_name: nginx-proxy
-    image: 'jwilder/nginx-proxy:alpine'
-    restart: always
-    ports:
-      - '80:80'
-      - '443:443'
-    environment:
-      - DEFAULT_HOST=${HOST}
-      - HSTS=off
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - proxy-certs:/etc/nginx/certs:ro
-      - proxy-vhost:/etc/nginx/vhost.d
-      - proxy-html:/usr/share/nginx/html
-  
-  proxy-letsencrypt:
-    image: 'jrcs/letsencrypt-nginx-proxy-companion'
-    restart: always
-    environment:
-      - DEFAULT_EMAIL=${LETSENCRYPT_EMAIL}
-      - NGINX_PROXY_CONTAINER=nginx-proxy
-      - NGINX_DOCKER_GEN_CONTAINER=nginx-proxy
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - proxy-certs:/etc/nginx/certs
-      - proxy-vhost:/etc/nginx/vhost.d
-      - proxy-html:/usr/share/nginx/html
-  
+  #nginx-proxy:
+  #  container_name: nginx-proxy
+  #  image: 'jwilder/nginx-proxy:alpine'
+  #  restart: always
+  #  ports:
+  #    - '80:80'
+  #    - '443:443'
+  #  environment:
+  #    - DEFAULT_HOST=${HOST}
+  #    - HSTS=off
+  #  volumes:
+  #    - /var/run/docker.sock:/tmp/docker.sock:ro
+  #    - proxy-certs:/etc/nginx/certs:ro
+  #    - proxy-vhost:/etc/nginx/vhost.d
+  #    - proxy-html:/usr/share/nginx/html
+  # 
+  #proxy-letsencrypt:
+  #  image: 'jrcs/letsencrypt-nginx-proxy-companion'
+  #  restart: always
+  #  environment:
+  #    - DEFAULT_EMAIL=${LETSENCRYPT_EMAIL}
+  #    - NGINX_PROXY_CONTAINER=nginx-proxy
+  #    - NGINX_DOCKER_GEN_CONTAINER=nginx-proxy
+  #  volumes:
+  #    - /var/run/docker.sock:/var/run/docker.sock:ro
+  #    - proxy-certs:/etc/nginx/certs
+  #    - proxy-vhost:/etc/nginx/vhost.d
+  #    - proxy-html:/usr/share/nginx/html
+  # 
   send:
     image: '${DOCKER_SEND_IMAGE}'
+    user: "2000:2000"  # <--- Add this line
     restart: always
     ports:
       - '1234:1234'
     volumes:
-      - ./uploads:/uploads
+      - ./custom_assets:/app/dist/custom_assets
     environment:
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PORT=1234
       - DHPARAM_GENERATION=false
-      - LETSENCRYPT_HOST
-      - LETSENCRYPT_EMAIL
+      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
+      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
       - NODE_ENV=production
       - BASE_URL=${SEND_BASE_URL}
       - PORT=1234
       - REDIS_HOST=redis
+      # Site Identity
+      - CUSTOM_TITLE=${CUSTOM_TITLE}
+      - CUSTOM_DESCRIPTION=${CUSTOM_DESCRIPTION}
+      - CUSTOM_FOOTER_TEXT=${CUSTOM_FOOTER_TEXT}
+      - CUSTOM_FOOTER_URL=${CUSTOM_FOOTER_URL}
+      - UI_CUSTOM_ASSETS_ICON=${UI_CUSTOM_ASSETS_ICON}
 
-      # For local uploads storage
-      - FILE_DIR=/uploads
+      # Visual Branding (Colors use Hex codes)
+      - UI_COLOR_PRIMARY=${UI_COLOR_PRIMARY}
+      - UI_COLOR_ACCENT=${UI_COLOR_ACCENT}
+      - UI_CUSTOM_CSS=${UI_CUSTOM_CSS}
 
-      # For S3 object storage (disable volume and FILE_DIR variable)
-      # - AWS_ACCESS_KEY_ID=********
-      # - AWS_SECRET_ACCESS_KEY=********
-      # - S3_BUCKET=send
-      # - S3_ENDPOINT=s3.us-west-2.amazonaws.com
-      # - S3_USE_PATH_STYLE_ENDPOINT=true
+      # Custom Links
+      - UI_FOOTER_URL=${UI_FOOTER_URL}
+      - UI_PRIVACY_URL=${UI_PRIVACY_URL}
+      - UI_TERMS_URL=${UI_TERMS_URL}
+
+      # Footer links & options
+      - SEND_FOOTER_CLI_URL=${SEND_FOOTER_CLI_URL}
+      - SEND_FOOTER_DMCA_URL=${SEND_FOOTER_DMCA_URL}
+      - SEND_FOOTER_DONATE_URL=${SEND_FOOTER_DONATE_URL}
+      - SEND_FOOTER_SOURCE_URL=${SEND_FOOTER_SOURCE_URL}
+      - SHOW_THUNDERBIRD_SPONSOR=${SHOW_THUNDERBIRD_SPONSOR}
+
+      # For S3 object storage
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - S3_BUCKET=${S3_BUCKET}
+      - S3_ENDPOINT=${S3_ENDPOINT}
+      - S3_USE_PATH_STYLE_ENDPOINT=${S3_USE_PATH_STYLE_ENDPOINT}
 
       # To customize upload limits
       # - EXPIRE_TIMES_SECONDS=3600,86400,604800,2592000,31536000
@@ -68,12 +89,14 @@ services:
   
   redis:
     image: 'redis:alpine'
+    user: "2000:2000" # Now it matches your senduser
+    command: ["redis-server", "--dir", "/data"]
     restart: always
     volumes:
       - send-redis:/data
 
 volumes:
   send-redis:
-  proxy-certs:
-  proxy-vhost:
-  proxy-html:
+    #proxy-certs:
+    #proxy-vhost:
+    #proxy-html:

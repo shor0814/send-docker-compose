@@ -1,0 +1,119 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Web of Nevada — Send Whitelabel
+   Colors sourced from client.webofnevada.com CSS variables
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ─── Extended WON Palette (light mode defaults) ─────────────── */
+:root {
+  --won-primary:          #CB2910;   /* brand red */
+  --won-primary-hover:    #FF826F;   /* lighter red — hover/active */
+  --won-primary-darker:   #AE2323;   /* darker red — pressed/focus */
+  --won-secondary:        #C42727;   /* secondary red */
+
+  --won-bg:               #F7F7F8;   /* page background */
+  --won-surface:          #FFFFFF;   /* card / panel surface */
+  --won-subtle:           #EFEFF1;   /* alternating row / subtle fill */
+
+  --won-border:           #DEE0E3;   /* dividers, input borders */
+
+  --won-text:             #17191C;   /* headings */
+  --won-text-body:        #4B4F58;   /* body text */
+  --won-text-muted:       #6D7482;   /* captions, footer, secondary text */
+}
+
+/* ─── Page & layout backgrounds ─────────────────────────────── */
+body,
+.md\:bg-grey-10                { background-color: var(--won-bg)      !important; }
+.bg-white                      { background-color: var(--won-surface)  !important; }
+.bg-grey-20                    { background-color: var(--won-subtle)   !important; }
+.bg-grey-10                    { background-color: var(--won-bg)       !important; }
+
+/* ─── Text ───────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6        { color: var(--won-text)       !important; }
+.text-grey-90                  { color: var(--won-text)       !important; }
+.text-grey-80                  { color: var(--won-text)       !important; }
+.text-grey-70                  { color: var(--won-text-body)  !important; }
+.text-grey-60                  { color: var(--won-text-body)  !important; }
+.text-grey-50                  { color: var(--won-text-muted) !important; }
+.text-grey-40                  { color: var(--won-text-muted) !important; }
+p                              { color: var(--won-text-body); }
+
+/* ─── Links ──────────────────────────────────────────────────── */
+a.link,
+.text-primary                  { color: var(--won-primary)        !important; }
+a.link:hover,
+.hover\:text-primary:hover     { color: var(--won-primary-hover)   !important; }
+
+/* ─── Primary buttons & filled elements ─────────────────────── */
+.bg-primary                    { background-color: var(--won-primary)        !important; }
+.hover\:bg-primary:hover       { background-color: var(--won-primary-hover)  !important; }
+.focus\:bg-primary:focus       { background-color: var(--won-primary-darker) !important; }
+.btn                           { transition: background-color 0.15s ease,
+                                             border-color 0.15s ease,
+                                             color 0.15s ease; }
+
+/* ─── Borders & upload dropzone ─────────────────────────────── */
+.border-grey-30                { border-color: var(--won-border)         !important; }
+.border-grey-20                { border-color: var(--won-subtle)         !important; }
+.border-primary                { border-color: var(--won-primary)        !important; }
+.hover\:border-primary:hover   { border-color: var(--won-primary-darker) !important; }
+
+/* ─── SVG icons rendered via currentColor ───────────────────── */
+.text-primary svg,
+svg.text-primary               { color: var(--won-primary); }
+
+/* ─── Header ─────────────────────────────────────────────────── */
+.main-header                   { background-color: var(--won-surface) !important;
+                                  border-bottom: 1px solid var(--won-border); }
+
+/* ─── Footer ─────────────────────────────────────────────────── */
+footer,
+.main-footer                   { border-top: 1px solid var(--won-border); }
+.text-grey-60.dark\:text-grey-40 { color: var(--won-text-muted) !important; }
+
+/* ─── Card / main panel shadow ──────────────────────────────── */
+.md\:shadow-big                { background-color: var(--won-surface) !important;
+                                  box-shadow: 0px 0px 1px rgba(0,0,0,0.04),
+                                              0px 8px 40px rgba(0,0,0,0.08) !important; }
+
+/* ═══════════════════════════════════════════════════════════════
+   Dark mode — follows system preference
+   Colors match client.webofnevada.com dark palette
+   ═══════════════════════════════════════════════════════════════ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --won-bg:         #121212;
+    --won-surface:    #2B2B2B;
+    --won-border:     #424242;
+    --won-subtle:     #303030;
+    --won-text:       #E0E0E0;
+    --won-text-body:  #D9D9D9;
+    --won-text-muted: #8C8C8C;
+    /* Primary stays the same in dark — strong enough red on dark bg */
+  }
+
+  body,
+  .dark\:bg-black,
+  .md\:bg-grey-10               { background-color: var(--won-bg)      !important; }
+
+  .dark\:text-grey-40           { color: var(--won-text-muted) !important; }
+
+  .bg-white                     { background-color: var(--won-surface) !important; }
+  .bg-grey-10,
+  .bg-grey-20                   { background-color: var(--won-subtle)  !important; }
+
+  h1, h2, h3, h4, h5, h6       { color: var(--won-text)       !important; }
+  .text-grey-80                 { color: var(--won-text)       !important; }
+  .text-grey-60                 { color: var(--won-text-body)  !important; }
+  .text-grey-50,
+  .text-grey-40                 { color: var(--won-text-muted) !important; }
+
+  .border-grey-30               { border-color: var(--won-border) !important; }
+
+  .main-header                  { background-color: var(--won-surface) !important;
+                                   border-bottom-color: var(--won-border); }
+
+  .md\:shadow-big               { background-color: var(--won-surface) !important;
+                                   box-shadow: 0px 0px 1px rgba(0,0,0,0.16),
+                                               0px 8px 40px rgba(0,0,0,0.24) !important; }
+}
