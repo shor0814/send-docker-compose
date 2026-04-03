@@ -1,4 +1,4 @@
-version: "3"
+version: "3.9"
 
 services:
   #nginx-proxy:
@@ -32,13 +32,17 @@ services:
   # 
   send:
     image: '${DOCKER_SEND_IMAGE}'
-    user: "2000:2000"  # <--- Add this line
+    user: "2000:2000"
     restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
     ports:
       - '1234:1234'
     volumes:
       - ./custom_assets:/app/dist/custom_assets
     environment:
+      - DATABASE_URL=${DATABASE_URL}
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PORT=1234
       - DHPARAM_GENERATION=false
@@ -89,14 +93,30 @@ services:
   
   redis:
     image: 'redis:alpine'
-    user: "2000:2000" # Now it matches your senduser
+    user: "2000:2000"
     command: ["redis-server", "--dir", "/data"]
     restart: always
     volumes:
       - send-redis:/data
 
+  postgres:
+    image: 'postgres:15-alpine'
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - send-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
   send-redis:
+  send-postgres:
     #proxy-certs:
     #proxy-vhost:
     #proxy-html:
