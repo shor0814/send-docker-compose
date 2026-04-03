@@ -43,6 +43,7 @@ services:
       - ./custom_assets:/app/dist/custom_assets
     environment:
       - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
       - VIRTUAL_HOST=${HOST}
       - VIRTUAL_PORT=1234
       - DHPARAM_GENERATION=false
